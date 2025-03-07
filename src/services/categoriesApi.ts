@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Category } from '../models/category';
 import {APP_ENV} from "../env";
-import { ICategoryCreate } from '../types/Category';
+import { ICategoryCreate, ICategoryEdit } from '../types/Category';
 import { serialize } from 'object-to-formdata';
 
 export const categoriesApi = createApi({
@@ -39,6 +39,22 @@ export const categoriesApi = createApi({
             invalidatesTags: ["Category"],
         }),
 
+        updateCategory: builder.mutation<void, ICategoryEdit>({
+            query: ({ id, ...model }) => {
+                try {
+                    const formData = serialize(model);
+                    return {
+                        url: `categories/${id}`,
+                        method: 'PUT',
+                        body: formData
+                    };
+                } catch {
+                    throw new Error("Error serializing the form data.");
+                }
+            },
+            invalidatesTags: ["Category"]
+        }),
+
         deleteCategory: builder.mutation<void, number>({
             query: (id) => ({
                 url: `categories/${id}`,
@@ -53,5 +69,6 @@ export const {
     useGetAllCategoriesQuery,
     useGetCategoryByIdQuery,
     useCreateCategoryMutation,
-    useDeleteCategoryMutation
+    useDeleteCategoryMutation,
+    useUpdateCategoryMutation
 } = categoriesApi;

@@ -4,6 +4,7 @@ export interface Category {
     description: string;
     image: string;
     creationTime: string;
+    imageFile?: File | null;
 }
 
 export interface ICategoryCreate {

@@ -6,6 +6,7 @@ import CategoriesPage from './pages/category/CategoriesPage';
 import Layout from './components/Layout';
 import ProductPage from './pages/product/ProductsPage';
 import CreateCategoryPage from './pages/category/CreateCategoryPage';
+import EditCategoryPage from './pages/category/EditCategoryPage';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
                     <Route path='categories'>
                         <Route index element={<CategoriesPage />}/>
                         <Route path='create' element={<CreateCategoryPage />}/>
+                        <Route path='edit/:id' element={<EditCategoryPage />}/>
                     </Route>
                     <Route path='products'>
                         <Route index element={<ProductPage />}/>

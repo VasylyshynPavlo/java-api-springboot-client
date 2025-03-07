@@ -6,20 +6,21 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { useDeleteCategoryMutation, useGetAllCategoriesQuery } from '../../services/categoriesApi.ts';
 import { APP_ENV } from "../../env";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const CategoriesPage: React.FC = () => {
     const { data: categories, error, isLoading } = useGetAllCategoriesQuery();
     const [deleteCategory, { isLoading: isDeleting }] = useDeleteCategoryMutation();
     const [categoryToDelete, setCategoryToDelete] = useState<number | null>(null);
     const [openModal, setOpenModal] = useState<boolean>(false);
+    const [isOnCreateHover, setOnCreateHover] = useState<boolean>(false);
 
-    // Обробник відкриття модального вікна
     const openDeleteModal = (id: number) => {
         setCategoryToDelete(id);
         setOpenModal(true);
     };
 
-    // Обробник підтвердження видалення
     const handleDelete = async () => {
         if (categoryToDelete) {
             try {
@@ -31,10 +32,9 @@ const CategoriesPage: React.FC = () => {
         closeDeleteModal();
     };
 
-    // Обробник закриття модального вікна
     const closeDeleteModal = () => {
-        setOpenModal(false);        // Закриваємо модальне вікно після видалення
-        setCategoryToDelete(null);  // Скидаємо категорію
+        setOpenModal(false);
+        setCategoryToDelete(null);
     };
 
     if (isLoading) return <p>Loading...</p>;
@@ -50,12 +50,13 @@ const CategoriesPage: React.FC = () => {
             <h1 className="text-4xl text-center font-bold text-blue-700 p-6 ">
                 Categories
             </h1>
-            {/* Кнопка для переходу на сторінку створення категорії */}
             <div className="flex justify-start mb-6">
-                <Link to="create" // Вказуємо маршрут для створення категорії
-                      className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700"
+                <Link to="create"
+                    className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700"
+                    onMouseEnter={() => setOnCreateHover(true)}
+                    onMouseLeave={() => setOnCreateHover(false)}
                 >
-                    Create category
+                    <FontAwesomeIcon icon={faPlus} className={`${isOnCreateHover ? 'animate-rotate' : ''}`}/> Create category
                 </Link>
             </div>
 
@@ -90,10 +91,10 @@ const CategoriesPage: React.FC = () => {
                                 <Table.Cell>
                                     <div className="flex">
                                         <Link to={`edit/${category.id}`}>
-                                            <LiaEdit className="mx-1 h-6 w-6 text-gray-700" />
+                                            <FontAwesomeIcon icon={faPenToSquare} size='2x' className='mr-1 text-gray-500'/>
                                         </Link>
                                         <a href='#'>
-                                            <FaRegTrashAlt onClick={() => openDeleteModal(category.id)} className="mx-1 h-6 w-6 text-red-800" />
+                                            <div onClick={() => openDeleteModal(category.id)} className="mx-1 h-6 w-6 text-red-800"><FontAwesomeIcon icon={faTrash} size='2x'/></div>
                                         </a>
                                     </div>
                                 </Table.Cell>
