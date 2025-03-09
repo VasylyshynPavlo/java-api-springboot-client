@@ -6,6 +6,7 @@ import { Accept, useDropzone } from 'react-dropzone';
 import { motion } from 'framer-motion';
 import { faArrowLeft, faDownLong, faPaperclip, faSave } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { APP_ENV } from '../../env/index.ts';
 
 const EditCategoryPage: React.FC = () => {
     const { id } = useParams<{ id: string }>(); // Отримуємо ID категорії з URL
@@ -29,7 +30,6 @@ const EditCategoryPage: React.FC = () => {
                 id: categoryData.id,
                 name: categoryData.name,
                 description: categoryData.description ?? '',
-                imageFile: categoryData.imageFile ? new File([categoryData.imageFile], categoryData.imageFile, { type: 'image/jpeg' }) : null,
             });
         }
     }, [categoryData]);
@@ -102,7 +102,7 @@ const EditCategoryPage: React.FC = () => {
                 Back to Categories
             </button>
 
-            <h1 className="text-2xl font-bold text-center mb-6">Create Category</h1>
+            <h1 className="text-2xl font-bold text-center mb-6">Edit Category</h1>
             <form onSubmit={handleSubmit}>
                 <motion.div
                     className="mb-4"
@@ -166,14 +166,26 @@ const EditCategoryPage: React.FC = () => {
                                 className={`mt-2 max-h-64 object-contain ${isHovered ? 'animate-shake' : ''}`}
                             />
                         </div>
+                    ) : categoryData?.image ? (
+                        <div
+                            {...getRootProps()}
+                            className={`flex items-center justify-center border-2 ${isDragActive ? 'border-dashed border-blue-300 bg-blue-100' : 'border-dashed border-gray-300'} rounded mt-2 p-6 cursor-pointer`}
+                        >
+                            <input {...getInputProps()} id="imageFile" name="imageFile" type="file" className="hidden" />
+                            <img
+                                src={`${APP_ENV.REMOTE_BASE_URL}/images/large/${categoryData.image}`} // Використовуємо `categoryData.image` для формування шляху
+                                alt={`${categoryData.name}`}
+                                className="max-h-64 object-contain"
+                            />
+                        </div>
                     ) : (
                         <div
                             {...getRootProps()}
                             className={`flex items-center justify-center border-2 ${isDragActive ? 'border-dashed border-blue-300 bg-blue-100' : 'border-dashed border-gray-300'} rounded mt-2 p-6 cursor-pointer`}
                         >
                             <input {...getInputProps()} id="imageFile" name="imageFile" type="file" className="hidden" />
-                            <FontAwesomeIcon icon={isDragActive ? faDownLong : faPaperclip} size="3x" className={`${isDragActive ? 'text-blue-500' : 'text-gray-500'}`} />
-                            <p className={`ml-2 ${isDragActive ? 'text-blue-500' : 'text-gray-500'}`}>{isDragActive ? 'Drop the image here' : 'Drag and drop or click to upload an image'}</p>
+                            <FontAwesomeIcon icon={isDragActive ? faDownLong : faPaperclip} size="3x" />
+                            <p>{isDragActive ? 'Drop the image here' : 'Drag and drop or click to upload an image'}</p>
                         </div>
                     )}
                 </motion.div>
@@ -192,18 +204,18 @@ const EditCategoryPage: React.FC = () => {
                         {isLoading ? (
                             <>
                                 <FontAwesomeIcon icon={faSave} className="mr-2" />
-                                Creating...
+                                Updating...
                             </>
                         ) : (
                             <>
                                 <FontAwesomeIcon icon={faSave} className="mr-2" />
-                                Create Category
+                                Save Changes
                             </>
                         )}
                     </button>
                 </motion.div>
 
-                {error && <p className="text-red-500 mt-2">Error creating category!</p>}
+                {error && <p className="text-red-500 mt-2">Error updating category!</p>}
             </form>
         </motion.div>
     );

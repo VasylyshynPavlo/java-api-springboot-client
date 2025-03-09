@@ -23,9 +23,6 @@ export const categoriesApi = createApi({
             query: (model) => {
                 try {
                     const formData = serialize(model);
-                    for (let [key, value] of formData.entries()) {
-                        console.log(`${key}:`, value);
-                    }
                     
                     return {
                         url: 'categories',

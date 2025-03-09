@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Modal, Table } from 'flowbite-react';
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { LiaEdit } from "react-icons/lia";
-import { FaRegTrashAlt } from "react-icons/fa";
 import { useDeleteCategoryMutation, useGetAllCategoriesQuery } from '../../services/categoriesApi.ts';
 import { APP_ENV } from "../../env";
 import { Link } from "react-router-dom";
@@ -40,10 +38,12 @@ const CategoriesPage: React.FC = () => {
     if (isLoading) return <p>Loading...</p>;
     if (error) return <p>Error occurred while fetching categories.</p>;
 
-    console.log("Categories data:", categories)
-    categories?.map((category) => (
-        console.log(APP_ENV.REMOTE_IMAGES_URL + 'medium/' + category.image)
-    ));
+
+
+    // console.log("Categories data:", categories)
+    // categories?.map((category) => (
+    //     console.log(APP_ENV.REMOTE_IMAGES_URL + 'medium/' + category.image)
+    // ));
 
     return (
         <>
@@ -56,7 +56,7 @@ const CategoriesPage: React.FC = () => {
                     onMouseEnter={() => setOnCreateHover(true)}
                     onMouseLeave={() => setOnCreateHover(false)}
                 >
-                    <FontAwesomeIcon icon={faPlus} className={`${isOnCreateHover ? 'animate-rotate' : ''}`}/> Create category
+                    <FontAwesomeIcon icon={faPlus} className={`${isOnCreateHover ? 'animate-rotate' : ''}`} /> Create category
                 </Link>
             </div>
 
@@ -91,10 +91,10 @@ const CategoriesPage: React.FC = () => {
                                 <Table.Cell>
                                     <div className="flex">
                                         <Link to={`edit/${category.id}`}>
-                                            <FontAwesomeIcon icon={faPenToSquare} size='2x' className='mr-1 text-gray-500'/>
+                                            <FontAwesomeIcon icon={faPenToSquare} size='2x' className='mr-1 text-gray-500' />
                                         </Link>
                                         <a href='#'>
-                                            <div onClick={() => openDeleteModal(category.id)} className="mx-1 h-6 w-6 text-red-800"><FontAwesomeIcon icon={faTrash} size='2x'/></div>
+                                            <div onClick={() => openDeleteModal(category.id)} className="mx-1 h-6 w-6 text-red-800"><FontAwesomeIcon icon={faTrash} size='2x' /></div>
                                         </a>
                                     </div>
                                 </Table.Cell>
@@ -113,9 +113,12 @@ const CategoriesPage: React.FC = () => {
                             Are you sure you want to delete this category?
                         </h3>
                         <div className="flex justify-center gap-4">
-                            <Button color="failure" onClick={() => handleDelete()} disabled={isDeleting}>
+
+                            <Button color="failure" onClick={() => handleDelete()} disabled={isDeleting}
+                            >
                                 {isDeleting ? "Deleting..." : "Yes, I'm sure"}
                             </Button>
+
                             <Button color="gray" onClick={() => closeDeleteModal()}>
                                 No, cancel
                             </Button>

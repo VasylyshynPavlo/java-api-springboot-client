@@ -10,7 +10,7 @@ export interface Category {
 export interface ICategoryCreate {
     name: string;
     description: string;
-    imageFile: File | null;
+    imageFile?: File | null;
 }
 
 export interface ICategoryEdit extends ICategoryCreate {
