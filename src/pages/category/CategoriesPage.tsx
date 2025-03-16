@@ -6,6 +6,7 @@ import { APP_ENV } from "../../env";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { motion } from 'framer-motion';
 
 const CategoriesPage: React.FC = () => {
     const { data: categories, error, isLoading } = useGetAllCategoriesQuery();
@@ -35,19 +36,25 @@ const CategoriesPage: React.FC = () => {
         setCategoryToDelete(null);
     };
 
-    if (isLoading) return <p>Loading...</p>;
-    if (error) return <p>Error occurred while fetching categories.</p>;
-
-
-
-    // console.log("Categories data:", categories)
-    // categories?.map((category) => (
-    //     console.log(APP_ENV.REMOTE_IMAGES_URL + 'medium/' + category.image)
-    // ));
+    if (isLoading) return (
+        <div className="flex justify-center items-center h-screen">
+            <div className="border-t-4 border-blue-600 border-solid w-16 h-16 rounded-full animate-spin"></div>
+        </div>
+    ); 
+    if (error) return (
+        <div className="flex justify-center items-center h-screen flex-col">
+            <div className="text-7xl font-bold text-white bg-blue-600 p-4 rounded mb-4">
+                500
+            </div>
+            <div className="text-black text-xl font-bold p-4 rounded">
+                Error occurred while fetching categories
+            </div>
+        </div>
+    );
 
     return (
         <>
-            <h1 className="text-4xl text-center font-bold text-blue-700 p-6 ">
+            <h1 className="text-4xl text-center font-bold text-blue-700 p-6">
                 Categories
             </h1>
             <div className="flex justify-start mb-6">
@@ -70,35 +77,39 @@ const CategoriesPage: React.FC = () => {
                         <Table.HeadCell>Actions</Table.HeadCell>
                     </Table.Head>
                     <Table.Body className="divide-y">
-                        {categories?.map((category) => (
-                            <Table.Row key={category.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                                <Table.Cell>
-                                    {category.id}
-                                </Table.Cell>
+                        {categories?.map((category, index) => (
+                            <motion.tr
+                                key={category.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.4, delay: index * 0.1 }}
+                                className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                            >
+                                <Table.Cell>{category.id}</Table.Cell>
                                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                     {category.name}
                                 </Table.Cell>
-                                <Table.Cell>
+                                <Table.Cell className='min-w-32 justify-items-center'>
                                     <img
                                         src={APP_ENV.REMOTE_IMAGES_URL + 'medium/' + category.image}
                                         alt={category.name}
                                         className="w-16 h-16 object-cover rounded"
                                     />
                                 </Table.Cell>
-                                <Table.Cell>
-                                    {category.description}
-                                </Table.Cell>
+                                <Table.Cell>{category.description}</Table.Cell>
                                 <Table.Cell>
                                     <div className="flex">
                                         <Link to={`edit/${category.id}`}>
-                                            <FontAwesomeIcon icon={faPenToSquare} size='2x' className='mr-1 text-gray-500' />
+                                            <FontAwesomeIcon icon={faPenToSquare} size='1x' className='mr-1 text-gray-500' />
                                         </Link>
                                         <a href='#'>
-                                            <div onClick={() => openDeleteModal(category.id)} className="mx-1 h-6 w-6 text-red-800"><FontAwesomeIcon icon={faTrash} size='2x' /></div>
+                                            <div onClick={() => openDeleteModal(category.id)} className="mx-1 h-6 w-6 text-red-800">
+                                                <FontAwesomeIcon icon={faTrash} size='1x' />
+                                            </div>
                                         </a>
                                     </div>
                                 </Table.Cell>
-                            </Table.Row>
+                            </motion.tr>
                         ))}
                     </Table.Body>
                 </Table>
@@ -113,12 +124,9 @@ const CategoriesPage: React.FC = () => {
                             Are you sure you want to delete this category?
                         </h3>
                         <div className="flex justify-center gap-4">
-
-                            <Button color="failure" onClick={() => handleDelete()} disabled={isDeleting}
-                            >
+                            <Button color="failure" onClick={() => handleDelete()} disabled={isDeleting}>
                                 {isDeleting ? "Deleting..." : "Yes, I'm sure"}
                             </Button>
-
                             <Button color="gray" onClick={() => closeDeleteModal()}>
                                 No, cancel
                             </Button>

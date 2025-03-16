@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Category } from '../models/category';
-import {APP_ENV} from "../env";
+import { APP_ENV } from "../env";
 import { ICategoryCreate, ICategoryEdit } from '../types/Category';
 import { serialize } from 'object-to-formdata';
 

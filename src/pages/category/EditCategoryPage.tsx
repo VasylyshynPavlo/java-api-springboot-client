@@ -83,8 +83,21 @@ const EditCategoryPage: React.FC = () => {
         }));
     };
 
-    if (isLoadingCategory) return <p>Loading...</p>;
-    if (getCategoryError) return <p>Error loading category data.</p>;
+    if (isLoadingCategory) return (
+        <div className="flex justify-center items-center h-screen">
+            <div className="border-t-4 border-blue-600 border-solid w-16 h-16 rounded-full animate-spin"></div>
+        </div>
+    );
+    if (getCategoryError) return (
+        <div className="flex justify-center items-center h-screen flex-col">
+            <div className="text-7xl font-bold text-white bg-blue-600 p-4 rounded mb-4">
+                500
+            </div>
+            <div className="text-black text-xl font-bold p-4 rounded">
+                Error occurred while fetching categories
+            </div>
+        </div>
+    );
 
     return (
         <motion.div

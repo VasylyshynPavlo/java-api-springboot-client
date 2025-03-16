@@ -67,13 +67,11 @@ const CreateCategoryPage: React.FC = () => {
         }));
     };
 
+    
+
     return (
-        <motion.div
+        <div
             className="max-w-xl mx-auto p-6 bg-white shadow-md rounded-lg"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
         >
             <button
                 onClick={() => navigate('/categories')}
@@ -186,7 +184,7 @@ const CreateCategoryPage: React.FC = () => {
 
                 {error && <p className="text-red-500 mt-2">Error creating category!</p>}
             </form>
-        </motion.div>
+        </div>
     );
 };
 

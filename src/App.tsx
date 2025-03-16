@@ -4,9 +4,11 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import CategoriesPage from './pages/category/CategoriesPage';
 import Layout from './components/Layout';
-import ProductPage from './pages/product/ProductsPage';
+import ProductsPage from './pages/product/ProductsPage';
 import CreateCategoryPage from './pages/category/CreateCategoryPage';
 import EditCategoryPage from './pages/category/EditCategoryPage';
+import CreateProductPage from './pages/product/CreateProductPage';
+import EditProductPage from './pages/product/EditProductPage';
 
 
 function App() {
@@ -21,8 +23,10 @@ function App() {
                         <Route path='edit/:id' element={<EditCategoryPage />}/>
                     </Route>
                     <Route path='products'>
-                        <Route index element={<ProductPage />}/>
-                        
+                        <Route index element={<ProductsPage />}/>
+                        <Route path='create' element={<CreateProductPage />}/>
+                        <Route path='edit/:id' element={<EditProductPage />}/>
+    
                     </Route>
                 </Route>
             </Routes>
