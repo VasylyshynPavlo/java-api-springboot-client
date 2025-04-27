@@ -9,6 +9,8 @@ import CreateCategoryPage from './pages/category/CreateCategoryPage';
 import EditCategoryPage from './pages/category/EditCategoryPage';
 import CreateProductPage from './pages/product/CreateProductPage';
 import EditProductPage from './pages/product/EditProductPage';
+import RegisterPage from './pages/auth/RegisterPage';
+import LoginPage from './pages/auth/LoginPage';
 
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
                         <Route path='edit/:id' element={<EditProductPage />}/>
     
                     </Route>
+                    <Route path={"register"} element={<RegisterPage />} />
+                    <Route path={"login"} element={<LoginPage />} />
                 </Route>
             </Routes>
         </Router>
