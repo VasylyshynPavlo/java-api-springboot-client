@@ -3,7 +3,7 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIcons, faBagShopping, faHome } from '@fortawesome/free-solid-svg-icons';
 import { motion, AnimatePresence } from 'framer-motion';
-import { decodeToken, getEmailFromToken } from '../utils/decodeToken';
+import { getEmailFromToken } from '../utils/decodeToken';
 import { APP_ENV } from "../env";
 
 const fetchUserData = async (email: string) => {
@@ -110,14 +110,14 @@ const Layout = () => {
             </>
           ) : (
             <>
-              <Link to="/register" className="hover:underline">
-                Sign up
+              <Link to="/login" className="hover:underline">
+                Sign in
               </Link>
               <Link
-                to="/login"
+                to="/register"
                 className="bg-blue-700 hover:bg-blue-800 px-3 py-1 rounded-md"
               >
-                Sign in
+                Sign up
               </Link>
             </>
           )}
