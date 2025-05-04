@@ -18,13 +18,13 @@ export const authApi = createApi({
     }),
     tagTypes: ["AuthUser"],
     endpoints: (builder) => ({
-        registerUser: builder.mutation<{ message: string }, IUserRegisterRequest>({
+        registerUser: builder.mutation<{ token: string }, IUserRegisterRequest>({
             query: (userRegister) => {
                 const formData = new FormData();
-                formData.append('username', userRegister.username);
-                formData.append('password', userRegister.password);
+                formData.append("username", userRegister.username);
+                formData.append("password", userRegister.password);
                 if (userRegister.avatar) {
-                    formData.append('avatar', userRegister.avatar);
+                    formData.append("avatar", userRegister.avatar);
                 }
         
                 return {
@@ -34,7 +34,7 @@ export const authApi = createApi({
                 };
             },
             invalidatesTags: ["AuthUser"],
-        }),
+        }),        
         loginUser: builder.mutation<{ token: string }, IUserLoginRequest>({
             query: (userLogin) => ({
                 url: "login",

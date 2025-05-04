@@ -25,7 +25,6 @@ const RegisterPage: React.FC = () => {
     const handleAvatarChange = (info: any) => {
         const file = info.fileList[0]?.originFileObj;
         if (file) {
-            // Якщо був попередній URL — очистити
             if (avatarUrl) {
                 URL.revokeObjectURL(avatarUrl);
             }
@@ -41,7 +40,7 @@ const RegisterPage: React.FC = () => {
                 URL.revokeObjectURL(avatarUrl);
             }
         };
-    }, [avatarUrl]);   
+    }, [avatarUrl]);
 
 
 
@@ -50,7 +49,6 @@ const RegisterPage: React.FC = () => {
             let finalAvatar: File | null = null;
 
             if (avatar && editorRef.current) {
-                // Обрізаємо/масштабуємо картинку перед відправкою
                 const canvas = editorRef.current.getImageScaledToCanvas();
                 const blob = await new Promise<Blob>((resolve) =>
                     canvas.toBlob((blob) => resolve(blob as Blob))
@@ -66,7 +64,7 @@ const RegisterPage: React.FC = () => {
 
             console.log("Register user", userData);
             const response = await registerUser(userData).unwrap();
-            console.log("User registered", response);
+            localStorage.setItem('token', response.token);
             navigate("/");
         } catch (error) {
             console.error("Register error", error);
@@ -107,8 +105,20 @@ const RegisterPage: React.FC = () => {
                         <Input.Password placeholder="Enter password" />
                     </Item>
 
-                    {/* Завантаження аватара */}
-                    <Item label="Avatar">
+                    <Item
+                        label="Avatar"
+                        name="avatar"
+                        rules={[
+                            {
+                                validator: () => {
+                                    if (!avatar) {
+                                        return Promise.reject("Avatar is required");
+                                    }
+                                    return Promise.resolve();
+                                },
+                            },
+                        ]}
+                    >
                         <Upload
                             showUploadList={false}
                             beforeUpload={() => false}
@@ -142,8 +152,8 @@ const RegisterPage: React.FC = () => {
                                 </div>
                             </>
                         )}
-
                     </Item>
+
 
                     <Item>
                         <Button type="primary" htmlType="submit">
